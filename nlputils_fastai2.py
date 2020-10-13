@@ -4,21 +4,21 @@ import re
 
 def get_wiki(path,lang):
     name = f'{lang}wiki'
-    if (path+'/'+name).exists():
+    if os.path.exists(path+'/'+name)::
         print(f"{path/name} already exists; not downloading")
         return
 
     xml_fn = f"{lang}wiki-latest-pages-articles.xml"
     zip_fn = f"{xml_fn}.bz2"
 
-    if not (path+'/'+xml_fn).exists():
+    if not os.path.exists(path+'/'+xml_fn):
         print("downloading...")
         download_url(f'https://dumps.wikimedia.org/{name}/latest/{zip_fn}', path+'/'+zip_fn)
         print("unzipping...")
         bunzip(path+'/'+zip_fn)
 
     with working_directory(path):
-        if not (path/'wikiextractor').exists(): os.system('git clone https://github.com/attardi/wikiextractor.git')
+        if not os.path.exists(path/'wikiextractor'): os.system('git clone https://github.com/attardi/wikiextractor.git')
         print("extracting...")
         os.system("python wikiextractor/WikiExtractor.py --processes 4 --no_templates " +
             f"--min_text_length 1800 --filter_disambig_pages --log_file log -b 100G -q {xml_fn}")
@@ -29,7 +29,7 @@ def get_wiki(path,lang):
 def split_wiki(path,lang):
     dest = path/'docs'
     name = f'{lang}wiki'
-    if dest.exists():
+    if os.path.exists(dest):
         print(f"{dest} already exists; not splitting")
         return dest
 

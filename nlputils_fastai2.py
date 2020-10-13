@@ -4,7 +4,7 @@ import re
 
 def get_wiki(path,lang):
     name = f'{lang}wiki'
-    if os.path.exists(path+'/'+name)::
+    if os.path.exists(path+'/'+name):
         print(f"{path/name} already exists; not downloading")
         return
 
